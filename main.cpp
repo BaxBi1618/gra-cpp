@@ -1,17 +1,17 @@
-//importuje biblioteki
 #include <iostream>
 #include <windows.h>
 #include <fstream>
 #include <ctime>
 #include <conio.h>
 #include <stdio.h>
+
 //importuje inne pliki
 #include "miner.h"
 #include "shop.h"
-//definicje
+
+
 #define _WIN32_WINNT 0x0601
 
-//zarezerwowanie przestrzeni std
 using namespace std;
 
 //Dodanie mozliwoœci zmiany czcionki przy uzyciu debugera w code block
@@ -30,13 +30,13 @@ BOOL WINAPI SetCurrentConsoleFontEx(HANDLE hConsoleOutput, BOOL bMaximumWindow, 
 lpConsoleCurrentFontEx);
 }
 
-//zmienia kolor tekstu
+// changing a color of the text
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);//utworzenie zaczepu
-int zk(int k){
-    SetConsoleTextAttribute(hConsole, k);
+int color_chg(int color){
+    SetConsoleTextAttribute(hConsole, color);
 }
 
-//losuje znaleziony material
+// Draws a random material with a random amount
 void random_material(){
     int which_material = rand() % 100 + 1;
     int how_many_materials = rand() % 15 +1;
@@ -44,32 +44,32 @@ void random_material(){
     cout << "You found ";
 
     if(which_material <= 1){
-        zk(14);
+        color_chg(14);
         cout<<how_many_materials;
-        zk(11);
+        color_chg(11);
         cout<<" GOLD";
-        zk(15);
+        color_chg(15);
     }
     else if(which_material >5 && which_material <= 15){
-    	zk(10);
+    	color_chg(10);
         cout<<how_many_materials;
-    	zk(14);
+    	color_chg(14);
     	cout<<" SILVER";
-    	zk(15);
+    	color_chg(15);
 	}
 	else if(which_material >15 && which_material <= 50){
-		zk(11);
+		color_chg(11);
         cout<<how_many_materials;
-		zk(8);
+		color_chg(8);
 		cout<<" IRON";
-		zk(15);
+		color_chg(15);
 	}
 	else{
-		zk(11);
+		color_chg(11);
         cout<<how_many_materials;
-		zk(12);
+		color_chg(12);
 		cout<<" BRONZE ";
-		zk(15);
+		color_chg(15);
 	}
 }
 
@@ -87,11 +87,11 @@ int recap_check(int recap){
 
 //TODO: ulepszyc to funkcje i zamienic ja z system cls
 //czysci ekran(odpowiednik cls)
-void ClearScreen(){
+void clearScreen(){
     COORD cursorPosition;	cursorPosition.X = 0;	cursorPosition.Y = 0;	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorPosition);
 }
 
-// uruchomienie funkcji main
+
 int main()
 {
     //zmienne
@@ -107,7 +107,7 @@ int main()
 	cfi.cbSize = sizeof(cfi);
 
 	etykieta:
-    zk(15);
+    color_chg(15);
 	cout << R"(
 
 
@@ -151,28 +151,28 @@ int main()
 	        for (int i = 0; i < recap; i++)
 	        {
 	            system("cls");
-	            zk(10);
+	            color_chg(10);
 	            cout << miner_1;
 	            Sleep(200);
 	            system("cls");
 	            Sleep(100);
-	            zk(11);
+	            color_chg(11);
 	            cout << miner_2;
 	            Sleep(200);
 	            system("cls");
 	            Sleep(100);
-	            zk(12);
+	            color_chg(12);
 	            cout << miner_3;
 	            Sleep(200);
 	            system("cls");
 	            Sleep(100);
-	            zk(13);
+	            color_chg(13);
 	            cout << miner_2;
 	            Sleep(200);
 	            system("cls");
 	            Sleep(100);
 	        }
-	        zk(15);
+	        color_chg(15);
 	        system("cls");
 	        cout << "\n";
 	        random_material();
@@ -185,7 +185,7 @@ int main()
 
 	    case 2:
 	            system("cls");
-	            zk(10);
+	            color_chg(10);
 	            cout << shop_1;
 	            Sleep(100);
 	            system("cls");
@@ -193,7 +193,7 @@ int main()
 	            cfi.dwFontSize.X = 0;
 				cfi.dwFontSize.Y = 20;
 				SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
-	            zk(11);
+	            color_chg(11);
 	            cout << shop_2;
 	            Sleep(100);
 	            system("cls");
@@ -201,7 +201,7 @@ int main()
 	            cfi.dwFontSize.X = 0;
 				cfi.dwFontSize.Y = 24;
 				SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
-	            zk(12);
+	            color_chg(12);
 	            cout << shop_3;
 	            Sleep(100);
 	            system("cls");
@@ -209,7 +209,7 @@ int main()
 	            cfi.dwFontSize.X = 0;
 				cfi.dwFontSize.Y = 28;
 				SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
-	            zk(13);
+	            color_chg(13);
 	            cout << shop_4;
 	            Sleep(100);
 	            system("cls");
@@ -217,10 +217,10 @@ int main()
 	            cfi.dwFontSize.X = 0;
 				cfi.dwFontSize.Y = 32;
 				SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
-	            zk(14);
+	            color_chg(14);
 	            cout << shop_5;
 	    	getch();
-	    	zk(15);
+	    	color_chg(15);
 	    	system("cls");
 	    	cfi.dwFontSize.X = 0;
 			cfi.dwFontSize.Y = 16;
