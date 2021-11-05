@@ -5,7 +5,7 @@
 #include <conio.h>
 #include <stdio.h>
 
-//importuje inne pliki
+// ascii art file import
 #include "miner.h"
 #include "shop.h"
 
@@ -14,23 +14,12 @@
 
 using namespace std;
 
-//Dodanie mozliwoœci zmiany czcionki przy uzyciu debugera w code block
-typedef struct _CONSOLE_FONT_INFOEX
-{
-    ULONG cbSize;
-    DWORD nFont;
-    COORD dwFontSize;
-    UINT  FontFamily;
-    UINT  FontWeight;
-    WCHAR FaceName[LF_FACESIZE];
-}CONSOLE_FONT_INFOEX, *PCONSOLE_FONT_INFOEX;
-
 extern "C" {
 BOOL WINAPI SetCurrentConsoleFontEx(HANDLE hConsoleOutput, BOOL bMaximumWindow, PCONSOLE_FONT_INFOEX
 lpConsoleCurrentFontEx);
 }
 
-// changing a color of the text
+// Changing a color of the text
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);//utworzenie zaczepu
 int color_chg(int color){
     SetConsoleTextAttribute(hConsole, color);
@@ -85,12 +74,21 @@ int recap_check(int recap){
 	}
 }
 
+// prints a ascii art
+void print_art(string art, int color)
+{
+    color_chg(color);
+    cout << art;
+    Sleep(200);
+    system("cls");
+    Sleep(100);
+
+}
 //TODO: ulepszyc to funkcje i zamienic ja z system cls
 //czysci ekran(odpowiednik cls)
 void clearScreen(){
     COORD cursorPosition;	cursorPosition.X = 0;	cursorPosition.Y = 0;	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorPosition);
 }
-
 
 int main()
 {
@@ -151,26 +149,10 @@ int main()
 	        for (int i = 0; i < recap; i++)
 	        {
 	            system("cls");
-	            color_chg(10);
-	            cout << miner_1;
-	            Sleep(200);
-	            system("cls");
-	            Sleep(100);
-	            color_chg(11);
-	            cout << miner_2;
-	            Sleep(200);
-	            system("cls");
-	            Sleep(100);
-	            color_chg(12);
-	            cout << miner_3;
-	            Sleep(200);
-	            system("cls");
-	            Sleep(100);
-	            color_chg(13);
-	            cout << miner_2;
-	            Sleep(200);
-	            system("cls");
-	            Sleep(100);
+	            print_art(miner_1, 10);
+	            print_art(miner_2, 12);
+	            print_art(miner_3, 13);
+	            print_art(miner_2, 11);
 	        }
 	        color_chg(15);
 	        system("cls");
@@ -232,7 +214,7 @@ int main()
 			cfi.dwFontSize.X = 0;
 			cfi.dwFontSize.Y = 42;
 			SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
-			cout<<"See you again!!";
+			cout<<"Hope to see you again!!";
 			exit(0);
     }
     return 0;

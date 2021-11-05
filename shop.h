@@ -1,4 +1,4 @@
-//file with varible to shop
+//file with variables to shop
 #include <string>
 
 using namespace std;

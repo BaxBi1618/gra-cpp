@@ -1,4 +1,4 @@
-//file with varible to miner
+//file with variables to miner
 #include <string>
 
 using namespace std;
