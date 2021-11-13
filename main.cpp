@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <windows.h>
 #include <fstream>
@@ -41,6 +42,19 @@ struct Foo
      string value1;
      int value2;
 };
+
+string shop_item_buy(int number,int item_lvl,string item){
+
+    if(item_lvl == 0){
+        cout<<number<<". good "<<item<<" [lvl 1]\n";
+    }
+    else if(item_lvl == 1){
+        cout<<number<<". strong "<<item<<" [lvl 2]\n";
+    }
+    else if(item_lvl == 2){
+        cout<<number<<". ultra strong "<<item<<" [lvl 3]\n";
+    }
+}
 
 Foo random_material(){
     int which_material = rand() % 100 + 1;
@@ -126,31 +140,47 @@ void clearScreen(){
 int main(void)
 {
     //zmienne
-	string etykieta,line,material,sure,bank;
+	string etykieta,line,material,sure,bank,shop;
 	Foo result;
     int recap = 0;
     int check = 0;
-    int choice,gold,silver,iron,bronze,liczba,czynnsoc_bank,czynnosc_sklep;
+    int choice,gold,silver,iron,bronze,money;
+
+    //zmienne bank
+    int czynnsoc_bank;
+
+    //narzedzia
+    int wiadro,kilof,latarka;
+
+    //zmienne sklep
+    int czynnosc_sklep,buy_tools_czynnosc_sklep;
+        //sprzedaż materiałów
+        int total_sell,liczba;
+            //minerały
+                int money_gold,money_silver,money_iron,money_bronze;
 
 	::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000); //fullscreen
 	srand(time(NULL)); //uruchomienie funckji zwijanzanej z losowaniem liczb
 
 	etykieta:
-    //sprawdza stan ekwipunku (matera�y)
-	//zawarto�� pliku powinna by� taka
+    //sprawdza stan ekwipunku (matera³y)
+	//zawartoœæ pliku powinna byæ taka
 	//1 linijka gold
 	//2 linijka silver
 	//3 linijka iron
 	//4 bronze
-    char filename[ ] = "Ekwipunek.txt";
-    fstream ekwipunek;
-    ekwipunek.open(filename, std::fstream::in | std::fstream::out);
-
+    char filename_1[ ] = "Ekwipunek.txt";
+    char filename_2[ ] = "Portfel.txt";
+    char filename_3[ ] = "Narzedzia.txt";
+    fstream ekwipunek,portfel,narzedzia;
+    ekwipunek.open(filename_1, std::fstream::in | std::fstream::out);
+    portfel.open(filename_2, std::fstream::in | std::fstream::out);
+    narzedzia.open(filename_3,std::fstream::in | std::fstream::out);
 
     // If file does not exist, Create new file
-    if (!ekwipunek )
+    if(!ekwipunek )
     {
-        ekwipunek.open(filename,  fstream::in | fstream::out | fstream::trunc);
+        ekwipunek.open(filename_1,  fstream::in | fstream::out | fstream::trunc);
         ekwipunek <<"0\n";
         ekwipunek <<"0\n";
         ekwipunek <<"0\n";
@@ -158,6 +188,20 @@ int main(void)
         ekwipunek.close();
         goto etykieta;
 
+    }
+    if(!portfel){
+        portfel.open(filename_2,  fstream::in | fstream::out | fstream::trunc);
+        portfel <<"0\n";
+        portfel.close();
+        goto etykieta;
+    }
+    if(!narzedzia){
+        narzedzia.open(filename_3,  fstream::in | fstream::out | fstream::trunc);
+        narzedzia<<"0\n";
+        narzedzia<<"0\n";
+        narzedzia<<"0\n";
+        narzedzia.close();
+        goto etykieta;
     }
     else
     {    // use existing file
@@ -178,8 +222,27 @@ int main(void)
             }
             i++;
         }
-
+        while(getline(portfel,line))
+        {
+            money = stoi(line);
+        }
+        i=0;
+        while(getline(narzedzia,line))
+        {
+            if(i==0){
+                wiadro = stoi(line);
+            }
+            else if(i==1){
+                kilof = stoi(line);
+            }
+            else if(i==2){
+                latarka = stoi(line);
+            }
+            i++;
+        }
+        portfel.close();
         ekwipunek.close();
+        narzedzia.close();
         cout<<"\n";
     }
     color_chg(15);
@@ -238,31 +301,23 @@ int main(void)
             result = random_material();
             material = result.value1;
             liczba = result.value2;
-            ekwipunek.open(filename, std::fstream::in | std::fstream::out);
             if(material == "gold"){
-                ekwipunek<<gold+liczba<<"\n";
-                ekwipunek<<silver<<"\n";
-                ekwipunek<<iron<<"\n";
-                ekwipunek<<bronze<<"\n";
+                gold = gold+liczba;
             }
             else if(material == "silver"){
-                ekwipunek<<gold<<"\n";
-                ekwipunek<<silver<<"\n";
-                ekwipunek<<iron<<"\n";
-                ekwipunek<<bronze<<"\n";
+                silver=silver+liczba;
             }
             else if(material == "iron"){
-                ekwipunek<<gold<<"\n";
-                ekwipunek<<silver<<"\n";
-                ekwipunek<<iron+liczba<<"\n";
-                ekwipunek<<bronze<<"\n";
+                iron=iron+liczba;
             }
             else if(material == "bronze"){
-                ekwipunek<<gold<<"\n";
-                ekwipunek<<silver<<"\n";
-                ekwipunek<<iron<<"\n";
-                ekwipunek<<bronze+liczba<<"\n";
+                bronze= bronze+liczba;
             }
+            ekwipunek.open(filename_1, std::fstream::in | std::fstream::out);
+            ekwipunek<<gold<<"\n";
+            ekwipunek<<silver<<"\n";
+            ekwipunek<<iron<<"\n";
+            ekwipunek<<bronze<<"\n";
             ekwipunek.close();
 	        cout<<"\n";
 	        cout<<"\nClick any button !";
@@ -272,7 +327,6 @@ int main(void)
 	        break;
 
 	    case 2:
-
                 system("cls");
                 print_art(shop_1,10,100,100,true);
                 font_size(20);
@@ -283,27 +337,175 @@ int main(void)
 				print_art(shop_4,13,100,100,true);
 	            font_size(32);
                 print_art(shop_5,14,100,100,true);
+                shop:
                 font_size(18);
                 print_art(shop_6,15,1,1,false);
+
+
                 cout<<"\n\n\n---------------------------------------------------------\n\n\n";
                 color_chg(10);
                 cout<<"1.Buy new tools\n";
                 color_chg(11);
                 cout<<"2.Sell materials\n";
-                color_chg(12);
-                cout<<"3.Sell tools\n";
                 color_chg(14);
-                cout<<"4.Leave shop\n";
+                cout<<"3.Leave shop\n";
                 color_chg(15);
                 cout<<"What do you want to do: ";
                 cin>>czynnosc_sklep;
-                if(czynnosc_sklep==1){
-                    color_chg(15);
+                if(czynnosc_sklep == 1){
                     system("cls");
-                    font_size(18);
-                    goto etykieta;
+                    font_size(50);
+                    color_chg(12);
+                    cout<<"Stuff for sell\n\n";
+                    color_chg(11);
+                    if(wiadro > 2 && kilof > 2 && latarka > 2){
+                        cout<<"You already have the best tools\n\n";
+                    }
+                    else{
+                        shop_item_buy(1,wiadro,"bucket");
+                        shop_item_buy(2,kilof,"pickaxe");
+                        shop_item_buy(3,latarka,"torch");
+                    }
+                    color_chg(12);
+                    cout<<"Other options\n\n";
+                    color_chg(11);
+                    cout<<"4.guide\n";
+                    cout<<"5.back\n\n";
+                    color_chg(14);
+                    cout<<"What do you want to do: ";
+                    cin>>buy_tools_czynnosc_sklep;
+                    narzedzia.open(filename_3, std::fstream::in | std::fstream::out);
+                    if(buy_tools_czynnosc_sklep == 1){
+                        if(wiadro < 3){
+                            wiadro = wiadro+1;
+                            narzedzia<<wiadro<<endl;
+                            narzedzia<<kilof<<endl;
+                            narzedzia<<latarka<<endl;
+                            narzedzia.close();
+                        }
+                        else if(wiadro >2){
+                            system("cls");
+                            color_chg(12);
+                            cout<<"\nYou already have the best bucket\n";
+                            cout<<"\nClick any button\n";
+                            getch();
+                        }
+                        system("cls");
+                        goto shop;
+                    }
+                    else if(buy_tools_czynnosc_sklep == 2){
+                        if(kilof < 3){
+                            kilof= kilof+1;
+                            narzedzia<<wiadro<<endl;
+                            narzedzia<<kilof<<endl;
+                            narzedzia<<latarka<<endl;
+                            narzedzia.close();
+                        }
+                        else if(kilof >2){
+                            system("cls");
+                            color_chg(12);
+                            cout<<"\nYou already have the best pickaxe\n";
+                            cout<<"\nClick any button\n";
+                            getch();
+                        }
+                        system("cls");
+                        goto shop;
+
+                    }
+                    else if(buy_tools_czynnosc_sklep == 3){
+                        if(latarka < 3){
+                            latarka = latarka+1;
+                            narzedzia<<wiadro<<endl;
+                            narzedzia<<kilof<<endl;
+                            narzedzia<<latarka;
+                            narzedzia.close();
+                        }
+                        else if(latarka >2){
+                            system("cls");
+                            color_chg(12);
+                            cout<<"\nYou already have the best torch\n";
+                            cout<<"\nClick any button\n";
+                            getch();
+                        }
+
+                        system("cls");
+                        goto shop;
+
+                    }
+                    else if(buy_tools_czynnosc_sklep == 4){
+
+                    }
+                    else if(buy_tools_czynnosc_sklep == 5){
+                        color_chg(15);
+                        system("cls");
+                        goto shop;
+                    }
+                    else{
+                        color_chg(15);
+                        system("cls");
+                        font_size(18);
+                        goto etykieta;
+                    }
                 }
-                else if(czynnosc_sklep == 4){
+                else if(czynnosc_sklep == 2){
+                    system("cls");
+                    ekwipunek.open(filename_1, std::fstream::in | std::fstream::out);
+                    font_size(50);
+                    color_chg(14);
+                    cout<<"Sold\n";
+                    money_gold =(gold * 10);
+                    if(money_gold > 0){
+                        color_chg(11);
+                        cout<<gold<<" gold for "<<money_gold<<endl;
+                        gold = 0;
+                    }
+                    money_silver = silver*6;
+                    if(money_silver > 0){
+                        color_chg(14);
+                        cout<<silver<<" silver for "<<money_silver<<endl;
+                        silver = 0;
+                    }
+                    money_iron = iron*2;
+                    if(money_iron > 0){
+                        color_chg(8);
+                        cout<<iron<<" iron for "<<money_iron<<endl;
+                        iron=0;
+                    }
+                    money_bronze = bronze*1;
+                    if(money_bronze > 0){
+                        color_chg(12);
+                        cout<<bronze<<" bronze for "<<money_bronze<<endl;
+                        bronze=0;
+                    }
+                    ekwipunek<<gold<<endl;
+                    ekwipunek<<silver<<endl;
+                    ekwipunek<<iron<<endl;
+                    ekwipunek<<bronze<<endl;
+                    ekwipunek.close();
+                    if(money_bronze == 0 && money_iron == 0 && money_silver ==0 && money_bronze == 0){
+                        color_chg(14);
+                        system("cls");
+                        cout<<"You can't sell anything\n";
+                    }
+                    else{
+                        color_chg(14);
+                        total_sell= money_bronze+money_iron+money_silver+money_gold;
+                        cout<<"Total earned "<<total_sell<<"$\n";
+                        portfel.open(filename_2, std::fstream::in | std::fstream::out);
+                        money = money + total_sell;
+                        portfel<<money;
+                        portfel.close();
+                    }
+                    color_chg(15);
+                    cout<<"\n";
+                    cout<<"\nClick any button !";
+                    getch();
+                    font_size(18);
+                    system("cls");
+                    goto etykieta;
+
+                }
+                else if(czynnosc_sklep == 3){
                     color_chg(15);
                     system("cls");
                     font_size(18);
@@ -329,9 +531,12 @@ int main(void)
             cout<<"Iron: "<<iron<<endl;
             color_chg(12);
             cout<<"Bronze: "<<bronze<<endl;
+            color_chg(13);
+            cout<<"Money: "<<money<<endl;
             color_chg(15);
             cout<<"\n1.Leave bank\n"
-                <<"2.Clear the sejf\n\n"
+                <<"2.Clear the safe (Material)\n"
+                <<"3.Clear the safe (Money)\n\n"
                 <<"What do you want to do: ";
             cin>>czynnsoc_bank;
             if(czynnsoc_bank == 1){
@@ -347,7 +552,7 @@ int main(void)
                     cout<<"And what: ";
                     cin>>sure;
                     if(sure == "T" || sure =="t"){
-                        ekwipunek.open(filename, std::fstream::in | std::fstream::out);
+                        ekwipunek.open(filename_1, std::fstream::in | std::fstream::out);
                         for(int i = 0; i < 4;i++){
                             ekwipunek<<"0\n";
                         }
@@ -365,6 +570,29 @@ int main(void)
                     }
 
             }
+            else if(czynnsoc_bank == 3){
+                color_chg(12);
+                cout<<"\nAre you sure? You will lost all your money!! [T/N]\n\n";
+                color_chg(15);
+                cout<<"And what: ";
+                cin>>sure;
+                if(sure == "T" || sure =="t"){
+                    portfel.open(filename_2, std::fstream::in | std::fstream::out);
+                    portfel<<"0\n";
+                    portfel.close();
+                    color_chg(15);
+                    system("cls");
+                    font_size(18);
+                    goto etykieta;
+                }
+                else if(sure == "N" || sure == "n"){
+                    goto bank;
+                }
+                else{
+                    goto bank;
+                }
+
+            }
             else{
                 goto etykieta;
             }
@@ -375,9 +603,4 @@ int main(void)
 			exit(0);
     }
     return 0;
-
-
-
-
-
 }
