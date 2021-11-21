@@ -1,4 +1,4 @@
-//file with varible to shop
+//file with variables to shop
 #include <string>
 
 using namespace std;
@@ -216,3 +216,17 @@ string shop_5 = R"(
        sBB: rBQMbggBBBQBBBBQQQBBBBBBQQgDEQQgEBB         uBBgdQMEZRQBBBBBQBRQQBBBQBQBQREgBQ  jBB:
        YBBi rBBQQQBBBBBBBBBBBBBBBBBBBBBQQRBZDBB         uBBgZQQRQBBBBBBBBBBBBQBBBBBBBQQQBQ  1QB:
 		)";
+
+string shop_6 = R"(
+$$\   $$\           $$\ $$\                 $$\                           $$\
+$$ |  $$ |          $$ |$$ |                \__|                          $$ |
+$$ |  $$ | $$$$$$\  $$ |$$ | $$$$$$\        $$\ $$$$$$$\         $$$$$$$\ $$$$$$$\   $$$$$$\   $$$$$$\
+$$$$$$$$ |$$  __$$\ $$ |$$ |$$  __$$\       $$ |$$  __$$\       $$  _____|$$  __$$\ $$  __$$\ $$  __$$\
+$$  __$$ |$$$$$$$$ |$$ |$$ |$$ /  $$ |      $$ |$$ |  $$ |      \$$$$$$\  $$ |  $$ |$$ /  $$ |$$ /  $$ |
+$$ |  $$ |$$   ____|$$ |$$ |$$ |  $$ |      $$ |$$ |  $$ |       \____$$\ $$ |  $$ |$$ |  $$ |$$ |  $$ |
+$$ |  $$ |\$$$$$$$\ $$ |$$ |\$$$$$$  |      $$ |$$ |  $$ |      $$$$$$$  |$$ |  $$ |\$$$$$$  |$$$$$$$  |
+\__|  \__| \_______|\__|\__| \______/       \__|\__|  \__|      \_______/ \__|  \__| \______/ $$  ____/
+                                                                                              $$ |
+                                                                                              $$ |
+                                                                                              \__|
+                   )";
